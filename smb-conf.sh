@@ -25,10 +25,10 @@ read only = no'
 echo "$share_config" | sudo tee -a /etc/samba/smb.conf
 
 # Start Samba service
-sudo systemctl enable smbd.service
-sudo systemctl enable nmbd.service
-sudo systemctl start smbd.service
-sudo systemctl start nmbd.service
+sudo systemctl enable smb
+sudo systemctl enable nmb
+sudo systemctl start smb
+sudo systemctl start nmb
 
 # Add Samba user and setup password
 read -rp "Samba user: " user
