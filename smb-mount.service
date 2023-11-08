@@ -1,0 +1,10 @@
+[Unit]
+Description=Mount SMB Share at Start
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+ExecStart=/mnt/descargas/proyectos/bash-scripts/mount_smb.sh
+
+[Install]
+WantedBy=multi-user.target
