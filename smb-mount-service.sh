@@ -1,5 +1,12 @@
 #!/bin/bash
 
+
+# Verificar si el script se está ejecutando como root
+if [ "$(id -u)" != "0" ]; then
+   echo "Este script debe ser ejecutado como superusuario (root)." 1>&2
+   exit 1
+fi
+
 # Preguntar por el nombre del servicio
 read -p "Ingrese el nombre del servicio (sin espacios): " service_name
 
