@@ -10,6 +10,9 @@ sudo mkdir -p "$mnt_folder"
 # Pedir la dirección IP del servidor de Samba
 read -rp "Dirección IP del servidor de Samba: " samba_server_ip
 
+#Pedir el nombre del share
+read -rp "Nombre del share: " share_name
+
 # Pedir las credenciales de Samba al usuario
 read -rp "Samba username: " samba_user
 read -rsp "Samba password: " samba_pass
@@ -28,7 +31,7 @@ fi
 chmod 600 "$smb_credentials_file"
 
 # Agregar la línea al archivo /etc/fstab
-fstab_line="//${samba_server_ip}/descargas $mnt_folder cifs credentials=${smb_credentials_file},uid=$(id -u),gid=$(id -g) 0 0"
+fstab_line="//${samba_server_ip}/${share_name} $mnt_folder cifs credentials=${smb_credentials_file},uid=$(id -u),gid=$(id -g) 0 0"
 echo "$fstab_line" | sudo tee -a /etc/fstab
 
 # Recargar el daemon de systemd para aplicar los cambios en fstab

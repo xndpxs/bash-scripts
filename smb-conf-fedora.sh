@@ -1,19 +1,15 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-# Description: Script to install and configure Samba in Arch Linux.
-# Author: Winkey Wong.
-# Date: 2018-04-11
+# Instalar Samba
+sudo dnf install samba -y
 
-# Install Samba if not already installed
-if ! pacman -Qq samba &>/dev/null; then
-    echo "Installing samba"
-    sudo pacman --noconfirm -S samba
-fi
+# Habilitar y arrancar el servicio Samba
+sudo systemctl enable smb --now
 
-# Get Samba configuration file if it doesn't exist
-if [ ! -f /etc/samba/smb.conf ]; then
-    sudo wget "https://git.samba.org/samba.git/?p=samba.git;a=blob_plain;f=examples/smb.conf.default;hb=HEAD" -O /etc/samba/smb.conf
-fi
+# Obtener zonas activas del firewall y agregar Samba a la zona de FedoraWorkstation
+firewall-cmd --get-active-zones
+sudo firewall-cmd --permanent --zone=FedoraWorkstation --add-service=samba
+sudo firewall-cmd --reload
 
 # Agregar usuario a Samba
 echo "Ingrese el nombre de usuario para Samba:"
@@ -36,12 +32,12 @@ echo "[$share_name]
    read only = no
    valid users = $smb_user" | sudo tee -a /etc/samba/smb.conf
 
-# Start Samba service
-sudo systemctl enable smb
-sudo systemctl enable nmb
-sudo systemctl start smb
-sudo systemctl start nmb
+# Reiniciar el servicio Samba para aplicar los cambios
 sudo systemctl restart smb
-sudo systemctl restart nmb
+
+# Verificar si es necesario habilitar el servicio
+if ! sudo systemctl is-enabled smb; then
+    sudo systemctl enable smb
+fi
 
 echo "Configuración de Samba completada."

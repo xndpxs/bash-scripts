@@ -7,7 +7,7 @@
 sudo pacman -Syu --noconfirm
 
 # Instala Docker
-sudo pacman -S docker --noconfirm
+sudo pacman -S docker docker-compose --noconfirm
 
 # Añade el usuario actual al grupo docker
 sudo usermod -aG docker $USER
